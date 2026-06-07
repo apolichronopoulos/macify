@@ -48,6 +48,7 @@ brew 'docker'
 
 # Security & Crypto
 brew 'openssl@3'
+brew 'wireguard-tools'
 
 # Browsers
 cask 'google-chrome'
@@ -59,7 +60,7 @@ cask 'sublime-text'
 cask 'jetbrains-toolbox'
 cask 'postman'
 cask 'docker-desktop'
-# cask 'github-desktop' # does not work
+cask 'github'
 
 # Communication
 cask 'whatsapp'
@@ -74,7 +75,6 @@ cask 'google-gemini'
 cask 'iterm2'
 cask 'rectangle'
 cask 'maccy'
-cask 'ngrok'
 cask 'stats'
 cask 'anydesk'
 
@@ -85,4 +85,3 @@ cask 'copilot-cli'
 cask 'claude'
 cask 'claude-code'
 cask 'antigravity'
-cask 'antigravity-cli'

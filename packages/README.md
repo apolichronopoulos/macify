@@ -50,9 +50,12 @@ brew list
 
 # Add a new package
 brew install <package-name>
+```
 
-# Update Brewfile to reflect changes
-brew bundle dump --file=packages/Brewfile --force
+Add a package by force (replace existing Application etc)
+```bash
+brew reinstall --cask --force google-gemini
+brew reinstall --cask --force anydesk
 ```
 
 ## Uninstall
