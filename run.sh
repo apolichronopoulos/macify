@@ -20,7 +20,8 @@ show_main_menu() {
     echo ""
     echo "1) ${GREEN}Brew${NC}"
     echo "2) ${CYAN}Git${NC}"
-    echo "3) ${RED}Quit${NC}"
+    echo "3) ${YELLOW}Shell${NC}"
+    echo "4) ${RED}Quit${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -51,6 +52,20 @@ show_git_menu() {
     echo "1) ${BLUE}Config${NC} - Setup Git configurations"
     echo "2) ${BLUE}Apply Aliases${NC} - Apply Git aliases"
     echo "3) ${BLUE}View Aliases${NC} - View all Git aliases"
+    echo "4) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_shell_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${YELLOW}Shell${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${BLUE}Apply Aliases${NC} - Apply shell aliases to ~/.bashrc and ~/.zshrc"
+    echo "2) ${BLUE}View Aliases${NC} - View all shell aliases"
+    echo "3) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
     echo "4) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
@@ -119,6 +134,21 @@ setup_git_config() {
 
 setup_git_aliases() {
     bash "${SCRIPT_DIR}/setup/aliases.sh"
+}
+
+setup_shell_aliases() {
+    bash "${SCRIPT_DIR}/setup/shell-aliases.sh"
+}
+
+view_shell_aliases() {
+    echo -e "${BLUE}Shell Aliases:${NC}"
+    echo ""
+    cat "${SCRIPT_DIR}/.config/.shell_aliases" | grep -v '^#' | grep -v '^$' | sed 's/^/  /'
+}
+
+edit_shell_aliases() {
+    echo -e "${BLUE}Opening shell aliases in editor...${NC}"
+    ${EDITOR:-nano} "${SCRIPT_DIR}/.config/.shell_aliases"
 }
 
 view_git_aliases() {
@@ -195,6 +225,9 @@ main() {
                 handle_git_menu
                 ;;
             3)
+                handle_shell_menu
+                ;;
+            4)
                 echo -e "${BLUE}Goodbye!${NC}"
                 exit 0
                 ;;
@@ -277,6 +310,42 @@ handle_git_menu() {
                 ;;
             3)
                 view_git_aliases
+                return
+                ;;
+            4)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_shell_menu() {
+    while true; do
+        show_shell_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                setup_shell_aliases
+                return
+                ;;
+            2)
+                view_shell_aliases
+                return
+                ;;
+            3)
+                edit_shell_aliases
                 return
                 ;;
             4)
