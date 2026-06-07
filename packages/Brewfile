@@ -1,0 +1,87 @@
+# Homebrew bundle configuration
+# Run: brew bundle install --file=packages/Brewfile
+
+# Set the directory for installing applications
+cask_args appdir: '/Applications'
+
+# Version Managers
+brew 'nvm'
+brew 'pyenv'
+brew 'rbenv'
+brew 'mise'
+brew 'direnv'
+
+# Development Tools
+brew 'git'
+brew 'gh'
+brew 'git-absorb'
+brew 'pre-commit'
+
+# CLI Utilities
+brew 'curl'
+brew 'wget'
+brew 'htop'
+brew 'jq'
+brew 'bat'
+brew 'fd'
+brew 'tig'
+brew 'tree'
+
+
+# Programming Languages
+brew 'go'
+brew 'rust'
+brew 'python@3.14'
+brew 'ruby-build'
+
+# Build & Compiler Tools
+brew 'cmake'
+brew 'autoconf'
+brew 'automake'
+brew 'pkg-config'
+
+# Terminal & Shell
+brew 'tmux'
+
+# DevOps & Cloud
+brew 'docker'
+
+# Security & Crypto
+brew 'openssl@3'
+
+# Browsers
+cask 'google-chrome'
+cask 'brave-browser'
+
+# Development & Tools
+cask 'visual-studio-code'
+cask 'sublime-text'
+cask 'jetbrains-toolbox'
+cask 'postman'
+cask 'docker-desktop'
+# cask 'github-desktop' # does not work
+
+# Communication
+cask 'whatsapp'
+cask 'viber'
+
+# Productivity & Notes
+cask 'obsidian'
+cask 'bitwarden'
+cask 'google-gemini'
+
+# Utilities
+cask 'iterm2'
+cask 'maccy'
+cask 'ngrok'
+cask 'stats'
+cask 'anydesk'
+
+# AI CLI Tools
+brew 'opencode'
+cask 'opencode-desktop'
+cask 'copilot-cli'
+cask 'claude'
+cask 'claude-code'
+cask 'antigravity'
+cask 'antigravity-cli'
