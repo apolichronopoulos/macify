@@ -10,23 +10,48 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-show_menu() {
+show_main_menu() {
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${BLUE}     Macify - Development Setup${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${GREEN}Brew${NC}"
+    echo "2) ${CYAN}Git${NC}"
+    echo "3) ${RED}Quit${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_brew_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${GREEN}Brew${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo ""
     echo "1) ${GREEN}Install${NC} - Install all dependencies from Brewfile"
     echo "2) ${YELLOW}Upgrade${NC} - Upgrade all installed packages"
     echo "3) ${YELLOW}Check${NC} - Check Brewfile for discrepancies"
     echo "4) ${BLUE}Manual Apps${NC} - Show manually installed apps not in Brewfile"
-    echo "5) ${BLUE}Git Config${NC} - Setup Git configurations"
-    echo "6) ${BLUE}Git Aliases${NC} - Apply Git aliases"
-    echo "7) ${BLUE}View Aliases${NC} - View all Git aliases"
-    echo "8) ${BLUE}List${NC} - List all packages in Brewfile"
-    echo "9) ${BLUE}Edit${NC} - Open Brewfile in default editor"
-    echo "10) ${RED}Quit${NC}"
+    echo "5) ${BLUE}List${NC} - List all packages in Brewfile"
+    echo "6) ${BLUE}Edit${NC} - Open Brewfile in default editor"
+    echo "7) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_git_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${CYAN}Git${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${BLUE}Config${NC} - Setup Git configurations"
+    echo "2) ${BLUE}Apply Aliases${NC} - Apply Git aliases"
+    echo "3) ${BLUE}View Aliases${NC} - View all Git aliases"
+    echo "4) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -151,53 +176,118 @@ edit_brewfile() {
 }
 
 main() {
-    show_menu
-    read "?Choose an option (1-10): " choice
-    echo ""
+    while true; do
+        show_main_menu
+        read -k 1 "?Choose a group: " group_choice
 
-    # Check if ESC was pressed
-    if [ "$choice" = $'\033' ]; then
-        echo -e "${BLUE}Goodbye!${NC}"
-        exit 0
-    fi
-
-    case $choice in
-        1)
-            install_packages
-            ;;
-        2)
-            upgrade_packages
-            ;;
-        3)
-            check_brewfile
-            ;;
-        4)
-            check_manual_apps
-            ;;
-        5)
-            setup_git_config
-            ;;
-        6)
-            setup_git_aliases
-            ;;
-        7)
-            view_git_aliases
-            ;;
-        8)
-            list_packages
-            ;;
-        9)
-            edit_brewfile
-            ;;
-        10)
-            echo -e "${BLUE}Goodbye!${NC}"
+        # Check if ESC was pressed
+        if [[ "$group_choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
             exit 0
-            ;;
-        *)
-            echo -e "${RED}Invalid option. Please try again.${NC}"
-            exit 1
-            ;;
-    esac
+        fi
+        echo ""
+
+        case $group_choice in
+            1)
+                handle_brew_menu
+                ;;
+            2)
+                handle_git_menu
+                ;;
+            3)
+                echo -e "${BLUE}Goodbye!${NC}"
+                exit 0
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_brew_menu() {
+    while true; do
+        show_brew_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                install_packages
+                return
+                ;;
+            2)
+                upgrade_packages
+                return
+                ;;
+            3)
+                check_brewfile
+                return
+                ;;
+            4)
+                check_manual_apps
+                return
+                ;;
+            5)
+                list_packages
+                return
+                ;;
+            6)
+                edit_brewfile
+                return
+                ;;
+            7)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_git_menu() {
+    while true; do
+        show_git_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                setup_git_config
+                return
+                ;;
+            2)
+                setup_git_aliases
+                return
+                ;;
+            3)
+                view_git_aliases
+                return
+                ;;
+            4)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
 }
 
 main "$@"
