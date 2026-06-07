@@ -30,6 +30,7 @@ macify/
 ## Guides
 
 - **[Python Development Setup](docs/PYTHON_SETUP.md)** — pyenv, poetry, and pip configuration
+- **[Ruby Development Setup](docs/RUBY_SETUP.md)** — rbenv, Bundler, Rails, and RSpec configuration
 
 ## Notes
 
