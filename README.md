@@ -27,6 +27,10 @@ macify/
 - **Load aliases:** Source alias files in your shell configuration
 - **Setup Git configuration:** `setup/git-config.sh` — Copies .gitconfig and .gitconfig-apo to home directory (skips if files already exist)
 
+## Guides
+
+- **[Python Development Setup](docs/PYTHON_SETUP.md)** — pyenv, poetry, and pip configuration
+
 ## Notes
 
 - Update `.gitignore` to exclude sensitive files (API keys, tokens, etc.)
