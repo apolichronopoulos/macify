@@ -25,6 +25,7 @@ macify/
 - **Install packages:** `brew bundle install --file=packages/Brewfile`
 - **Restore configs:** Copy from `configs/` to appropriate locations
 - **Load aliases:** Source alias files in your shell configuration
+- **Setup Git configuration:** `setup/git-config.sh` — Copies .gitconfig and .gitconfig-apo to home directory (skips if files already exist)
 
 ## Notes
 

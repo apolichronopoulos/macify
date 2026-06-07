@@ -4,3 +4,5 @@
 alias ipconfig="ifconfig -a | grep 192.168."
 alias whatismyip="curl ifconfig.me && echo '' && curl ipinfo.io/ip && echo ''"
 
+# Git
+alias git_whoami="!echo "local" && git config user.name && git config user.email && echo "global" && git config --global user.name && git config --global user.email"
