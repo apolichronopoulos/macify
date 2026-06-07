@@ -64,9 +64,10 @@ show_shell_menu() {
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo ""
     echo "1) ${BLUE}Apply Aliases${NC} - Apply shell aliases to ~/.bashrc and ~/.zshrc"
-    echo "2) ${BLUE}View Aliases${NC} - View all shell aliases"
-    echo "3) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
-    echo "4) ${RED}Back${NC}"
+    echo "2) ${BLUE}View Repo Aliases${NC} - View aliases from the repo"
+    echo "3) ${BLUE}View Local Aliases${NC} - View aliases from ~/.bashrc and ~/.zshrc"
+    echo "4) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
+    echo "5) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -141,9 +142,29 @@ setup_shell_aliases() {
 }
 
 view_shell_aliases() {
-    echo -e "${BLUE}Shell Aliases:${NC}"
+    echo -e "${BLUE}Repository Shell Aliases:${NC}"
     echo ""
     cat "${SCRIPT_DIR}/.config/.shell_aliases" | grep -v '^#' | grep -v '^$' | sed 's/^/  /'
+}
+
+view_local_shell_aliases() {
+    echo -e "${BLUE}Local Shell Aliases${NC}"
+    echo ""
+
+    echo -e "${CYAN}~/.zshrc:${NC}"
+    if [ -f "$HOME/.zshrc" ]; then
+        grep "^alias" "$HOME/.zshrc" 2>/dev/null | sed 's/^/  /' || echo "  (no aliases)"
+    else
+        echo "  (file not found)"
+    fi
+
+    echo ""
+    echo -e "${CYAN}~/.bashrc:${NC}"
+    if [ -f "$HOME/.bashrc" ]; then
+        grep "^alias" "$HOME/.bashrc" 2>/dev/null | sed 's/^/  /' || echo "  (no aliases)"
+    else
+        echo "  (file not found)"
+    fi
 }
 
 edit_shell_aliases() {
@@ -345,10 +366,14 @@ handle_shell_menu() {
                 return
                 ;;
             3)
-                edit_shell_aliases
+                view_local_shell_aliases
                 return
                 ;;
             4)
+                edit_shell_aliases
+                return
+                ;;
+            5)
                 return
                 ;;
             *)
