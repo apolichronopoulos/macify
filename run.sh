@@ -51,8 +51,9 @@ show_git_menu() {
     echo ""
     echo "1) ${BLUE}Config${NC} - Setup Git configurations"
     echo "2) ${BLUE}Apply Aliases${NC} - Apply Git aliases"
-    echo "3) ${BLUE}View Aliases${NC} - View all Git aliases"
-    echo "4) ${RED}Back${NC}"
+    echo "3) ${BLUE}Apply Recommended Settings${NC} - Apply recommended Git options"
+    echo "4) ${BLUE}View Aliases${NC} - View all Git aliases"
+    echo "5) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -135,6 +136,10 @@ setup_git_config() {
 
 setup_git_aliases() {
     bash "${SCRIPT_DIR}/setup/aliases.sh"
+}
+
+setup_git_recommended() {
+    zsh "${SCRIPT_DIR}/setup/git-recommended-options.sh"
 }
 
 setup_shell_aliases() {
@@ -330,10 +335,14 @@ handle_git_menu() {
                 return
                 ;;
             3)
-                view_git_aliases
+                setup_git_recommended
                 return
                 ;;
             4)
+                view_git_aliases
+                return
+                ;;
+            5)
                 return
                 ;;
             *)
