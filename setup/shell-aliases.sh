@@ -17,19 +17,26 @@ NC='\033[0m'
 echo -e "${BLUE}Setting up Shell aliases...${NC}"
 echo ""
 
-# Copy aliases file to home directory
+# Copy or merge aliases file
 if [ ! -f "$HOME_ALIASES" ]; then
     cp "$ALIASES_FILE" "$HOME_ALIASES"
     echo -e "${GREEN}✓${NC} Copied aliases to ~/.shell_aliases"
 else
-    # Ask to overwrite
-    echo -e "${YELLOW}⚠${NC} ~/.shell_aliases already exists"
-    read "?Overwrite? (y/n): " overwrite
-    if [ "$overwrite" = "y" ]; then
-        cp "$ALIASES_FILE" "$HOME_ALIASES"
-        echo -e "${GREEN}✓${NC} Updated ~/.shell_aliases"
+    # Merge new aliases from repo file that don't exist in home file
+    local merged=0
+    while IFS= read -r line; do
+        if [ -n "$line" ] && [[ ! "$line" =~ ^# ]] && [[ ! "$line" =~ ^$ ]]; then
+            if ! grep -F -q "$line" "$HOME_ALIASES"; then
+                echo "$line" >> "$HOME_ALIASES"
+                merged=$((merged + 1))
+            fi
+        fi
+    done < "$ALIASES_FILE"
+
+    if [ $merged -gt 0 ]; then
+        echo -e "${GREEN}✓${NC} Merged $merged new alias(es) into ~/.shell_aliases"
     else
-        echo -e "${YELLOW}⊘${NC} Skipped copying aliases"
+        echo -e "${YELLOW}⊘${NC} ~/.shell_aliases already has all aliases"
     fi
 fi
 
