@@ -21,9 +21,10 @@ show_menu() {
     echo "2) ${YELLOW}Upgrade${NC} - Upgrade all installed packages"
     echo "3) ${YELLOW}Check${NC} - Check Brewfile for discrepancies"
     echo "4) ${BLUE}Manual Apps${NC} - Show manually installed apps not in Brewfile"
-    echo "5) ${BLUE}List${NC} - List all packages in Brewfile"
-    echo "6) ${BLUE}Edit${NC} - Open Brewfile in default editor"
-    echo "7) ${RED}Quit${NC}"
+    echo "5) ${BLUE}Git Config${NC} - Setup Git configurations"
+    echo "6) ${BLUE}List${NC} - List all packages in Brewfile"
+    echo "7) ${BLUE}Edit${NC} - Open Brewfile in default editor"
+    echo "8) ${RED}Quit${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -85,6 +86,10 @@ list_packages() {
     echo -e "${BLUE}Total:${NC} $(grep -c -E "^brew|^cask" "${BREWFILE_PATH}") packages"
 }
 
+setup_git_config() {
+    bash "${SCRIPT_DIR}/setup/git-config.sh"
+}
+
 edit_brewfile() {
     echo -e "${BLUE}Opening Brewfile in editor...${NC}"
     ${EDITOR:-nano} "${BREWFILE_PATH}"
@@ -92,7 +97,7 @@ edit_brewfile() {
 
 main() {
     show_menu
-    read -k 1 "?Choose an option (1-7): " choice
+    read -k 1 "?Choose an option (1-8): " choice
     echo ""
 
     # Check if ESC was pressed
@@ -115,12 +120,15 @@ main() {
             check_manual_apps
             ;;
         5)
-            list_packages
+            setup_git_config
             ;;
         6)
-            edit_brewfile
+            list_packages
             ;;
         7)
+            edit_brewfile
+            ;;
+        8)
             echo -e "${BLUE}Goodbye!${NC}"
             exit 0
             ;;
