@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+*.swp
+*.swo
+*~
+
+# IDE
+.idea/
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Secrets and sensitive data
+.env
+.env.local
+*.key
+*.pem
+*.p12
+
