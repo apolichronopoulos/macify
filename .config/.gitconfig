@@ -17,7 +17,7 @@
 	required = true
 [includeIf "gitdir:~/Projects/apo/*/"]
     path = ~/.gitconfig-apo
-[includeIf "gitdir:/Users/apolichronopoulos/Projects/apo/*/"]
+[includeIf "gitdir:~/Projects/apo/*/"]
     path = ~/.gitconfig-apo
 [fetch]
 	prune = true
