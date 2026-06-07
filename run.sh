@@ -22,9 +22,11 @@ show_menu() {
     echo "3) ${YELLOW}Check${NC} - Check Brewfile for discrepancies"
     echo "4) ${BLUE}Manual Apps${NC} - Show manually installed apps not in Brewfile"
     echo "5) ${BLUE}Git Config${NC} - Setup Git configurations"
-    echo "6) ${BLUE}List${NC} - List all packages in Brewfile"
-    echo "7) ${BLUE}Edit${NC} - Open Brewfile in default editor"
-    echo "8) ${RED}Quit${NC}"
+    echo "6) ${BLUE}Git Aliases${NC} - Apply Git aliases"
+    echo "7) ${BLUE}View Aliases${NC} - View all Git aliases"
+    echo "8) ${BLUE}List${NC} - List all packages in Brewfile"
+    echo "9) ${BLUE}Edit${NC} - Open Brewfile in default editor"
+    echo "10) ${RED}Quit${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -90,6 +92,21 @@ setup_git_config() {
     bash "${SCRIPT_DIR}/setup/git-config.sh"
 }
 
+setup_git_aliases() {
+    bash "${SCRIPT_DIR}/setup/aliases.sh"
+}
+
+view_git_aliases() {
+    echo -e "${BLUE}Git Aliases in Repository:${NC}"
+    echo ""
+    sed -n '/^\[alias\]/,/^\[/p' "${SCRIPT_DIR}/.config/.gitconfig" | grep -v '^\[' | sed 's/^[[:space:]]*/  /'
+
+    echo ""
+    echo -e "${BLUE}Git Aliases Applied Globally:${NC}"
+    echo ""
+    git config --global --list | grep '^alias\.' | sed 's/^alias\./  /'
+}
+
 edit_brewfile() {
     echo -e "${BLUE}Opening Brewfile in editor...${NC}"
     ${EDITOR:-nano} "${BREWFILE_PATH}"
@@ -97,7 +114,7 @@ edit_brewfile() {
 
 main() {
     show_menu
-    read -k 1 "?Choose an option (1-8): " choice
+    read "?Choose an option (1-10): " choice
     echo ""
 
     # Check if ESC was pressed
@@ -123,12 +140,18 @@ main() {
             setup_git_config
             ;;
         6)
-            list_packages
+            setup_git_aliases
             ;;
         7)
-            edit_brewfile
+            view_git_aliases
             ;;
         8)
+            list_packages
+            ;;
+        9)
+            edit_brewfile
+            ;;
+        10)
             echo -e "${BLUE}Goodbye!${NC}"
             exit 0
             ;;

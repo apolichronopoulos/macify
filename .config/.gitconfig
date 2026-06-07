@@ -15,6 +15,14 @@
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
+[includeIf "gitdir:~/Projects/apo/*/"]
+    path = ~/.gitconfig-apo
+[includeIf "gitdir:/Users/apolichronopoulos/Projects/apo/*/"]
+    path = ~/.gitconfig-apo
+[fetch]
+	prune = true
+[init]
+	defaultBranch = master
 [alias]
 	f = fetch
 	p = pull
@@ -29,12 +37,3 @@
 	https-to-ssh = "!f() { git remote set-url origin \"$(git remote get-url origin | sed -E \"s#https://github.com/(.+)#git@github.com:\\\\1#\")\"; }; f"
 	switch-to-ssh = "!f() { git remote set-url origin \"$(git remote get-url origin | sed -E \"s#https://github.com/(.+)#git@github.com:\\\\1#\")\"; }; f"
 	yolo = "!git commit -m \"$(curl --silent --fail https://whatthecommit.com/index.txt)\""
-
-[includeIf "gitdir:~/Projects/apo/*/"]
-    path = ~/.gitconfig-apo
-[includeIf "gitdir:/Users/apolichronopoulos/Projects/apo/*/"]
-    path = ~/.gitconfig-apo
-[fetch]
-	prune = true
-[init]
-	defaultBranch = master
