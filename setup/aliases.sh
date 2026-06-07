@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-set -e
-
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="${SCRIPT_DIR}/../.config/.gitconfig"
 
@@ -14,35 +12,28 @@ NC='\033[0m'
 echo -e "${BLUE}Applying Git aliases...${NC}"
 echo ""
 
-# Extract aliases from the config file
-declare -A aliases
-
-while IFS='=' read -r key value; do
-    # Skip empty lines and comments
-    [[ -z "$key" || "$key" =~ ^[[:space:]]*# ]] && continue
-
-    # Remove leading/trailing whitespace
-    key="${key#[[:space:]]}"
-    key="${key%[[:space:]]}"
-    value="${value#[[:space:]]}"
-    value="${value%[[:space:]]}"
-
-    # Remove quotes from value if present
-    if [[ "$value" =~ ^\"(.*)\"$ ]]; then
-        value="${BASH_REMATCH[1]}"
-    fi
-
-    aliases["$key"]="$value"
-done < <(grep -A100 '^\[alias\]' "$CONFIG_FILE" | grep -v '^\[' | tail -n +2)
-
-# Apply aliases
 count=0
-for alias in "${(k)aliases[@]}"; do
-    value="${aliases[$alias]}"
-    git config --global alias."$alias" "$value"
-    echo -e "  ${GREEN}✓${NC} git $alias"
+
+# Extract aliases from config and apply them
+while IFS= read -r line; do
+    # Skip empty lines
+    [ -z "$line" ] && continue
+
+    # Remove leading whitespace
+    line="${line#[[:space:]]}"
+
+    # Extract key (everything before first space and =)
+    key="${line%%[[:space:]]*}"
+    [ -z "$key" ] && continue
+
+    # Extract value (everything after = )
+    value="${line#*= }"
+
+    # Apply the alias
+    git config --global alias."$key" "$value"
+    echo -e "  ${GREEN}✓${NC} git $key"
     ((count++))
-done
+done < <(sed -n '/^\[alias\]/,/^\[/p' "$CONFIG_FILE" | grep -v '^\[')
 
 echo ""
 if [ $count -gt 0 ]; then

@@ -105,6 +105,44 @@ view_git_aliases() {
     echo -e "${BLUE}Git Aliases Applied Globally:${NC}"
     echo ""
     git config --global --list | grep '^alias\.' | sed 's/^alias\./  /'
+
+    echo ""
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${BLUE}Differences${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+
+    # Extract just the alias names
+    local repo_names=$(sed -n '/^\[alias\]/,/^\[/p' "${SCRIPT_DIR}/.config/.gitconfig" | grep -v '^\[' | sed 's/^[[:space:]]*//' | cut -d' ' -f1 | sort)
+    local global_names=$(git config --global --list | grep '^alias\.' | sed 's/^alias\.//' | cut -d'=' -f1 | sort)
+
+    # Missing from global (in repo but not applied)
+    echo -e "${YELLOW}Missing (in repo, not applied globally):${NC}"
+    local found_missing=0
+    while IFS= read -r alias; do
+        if [ -n "$alias" ] && ! echo "$global_names" | grep -q "^${alias}$"; then
+            echo -e "  ${YELLOW}⚠${NC} $alias"
+            found_missing=1
+        fi
+    done <<< "$repo_names"
+    if [ $found_missing -eq 0 ]; then
+        echo -e "  ${GREEN}None${NC}"
+    fi
+
+    echo ""
+
+    # Extra in global (applied but not in repo)
+    echo -e "${RED}Extra (applied globally, not in repo):${NC}"
+    local found_extra=0
+    while IFS= read -r alias; do
+        if [ -n "$alias" ] && ! echo "$repo_names" | grep -q "^${alias}$"; then
+            echo -e "  ${RED}◆${NC} $alias"
+            found_extra=1
+        fi
+    done <<< "$global_names"
+    if [ $found_extra -eq 0 ]; then
+        echo -e "  ${GREEN}None${NC}"
+    fi
 }
 
 edit_brewfile() {
