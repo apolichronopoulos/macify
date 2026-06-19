@@ -11,6 +11,8 @@
 
 # IDE
 .idea/
+!.idea/icon.svg
+!.idea/.ideaIcon.svg
 .vscode/
 
 # Temporary files
