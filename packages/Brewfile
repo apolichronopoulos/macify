@@ -26,6 +26,7 @@ brew 'bat'
 brew 'fd'
 brew 'tig'
 brew 'tree'
+brew 'logcli'
 
 
 # Programming Languages
