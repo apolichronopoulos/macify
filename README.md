@@ -5,27 +5,27 @@ Personal macOS setup and configuration management.
 ## What's included
 
 - **Brewfile** — Homebrew packages and applications
-- **Aliases** — Shell aliases and git aliases
-- **Configs** — Application configuration files
-- **Settings** — macOS system preferences and app settings
+- **Setup scripts** — Installation and configuration scripts
+- **Git configuration** — Git aliases and user configuration
+- **Shell aliases** — Custom shell aliases
 
 ## Directory structure
 
 ```
 macify/
-├── packages/          # Brewfile and package lists
-├── configs/           # Application configuration files
-├── aliases/           # Shell and git aliases
-├── settings/          # Application settings and preferences
-└── scripts/           # Setup and installation scripts
+├── packages/          # Brewfile and package manager lists
+├── setup/             # Setup and installation scripts
+├── .config/           # Git configuration and shell aliases
+├── docs/              # Development guides and documentation
+└── .claude/           # Claude Code workspace configuration
 ```
 
 ## Usage
 
 - **Install packages:** `brew bundle install --file=packages/Brewfile`
-- **Restore configs:** Copy from `configs/` to appropriate locations
-- **Load aliases:** Source alias files in your shell configuration
-- **Setup Git configuration:** `setup/git-config.sh` — Copies .gitconfig and .gitconfig-apo to home directory (skips if files already exist)
+- **Setup Git configuration:** `setup/git-config.sh` — Copies `.gitconfig` and `.gitconfig-apo` to home directory
+- **Setup shell aliases:** `setup/shell-aliases.sh` — Configures shell aliases and environment
+- **Setup other tools:** See individual scripts in `setup/` directory
 
 ## Guides
 
@@ -34,6 +34,6 @@ macify/
 
 ## Notes
 
-- Update `.gitignore` to exclude sensitive files (API keys, tokens, etc.)
-- Each configuration directory can have its own README for specific setup instructions
+- Sensitive files (API keys, tokens, etc.) are excluded in `.gitignore`
+- See `packages/README.md` for detailed Brewfile information
 

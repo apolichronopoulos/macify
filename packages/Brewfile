@@ -60,6 +60,9 @@ cask 'jetbrains-toolbox'
 cask 'postman'
 cask 'github'
 brew 'gh'
+brew 'kubectl'
+brew 'helm'
+brew 'devspace'
 
 # Communication
 cask 'whatsapp'
