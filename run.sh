@@ -15,6 +15,7 @@ MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 show_main_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${BLUE}     Macify - Development Setup${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -31,6 +32,7 @@ show_main_menu() {
 }
 
 show_brew_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${GREEN}Brew${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -48,6 +50,7 @@ show_brew_menu() {
 }
 
 show_git_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${CYAN}Git${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -63,6 +66,7 @@ show_git_menu() {
 }
 
 show_shell_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${YELLOW}Shell${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -78,6 +82,7 @@ show_shell_menu() {
 }
 
 show_docker_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${BLUE}Docker${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -94,6 +99,7 @@ show_docker_menu() {
 }
 
 show_versions_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${MAGENTA}Versions${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -108,6 +114,7 @@ show_versions_menu() {
 }
 
 show_pyenv_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${GREEN}pyenv${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -126,6 +133,7 @@ show_pyenv_menu() {
 }
 
 show_rbenv_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${RED}rbenv${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -144,6 +152,7 @@ show_rbenv_menu() {
 }
 
 show_nvm_menu() {
+    clear
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
     echo -e "${YELLOW}nvm${NC}"
     echo -e "${BLUE}═══════════════════════════════════════${NC}"
@@ -712,32 +721,26 @@ handle_brew_menu() {
             1)
                 install_packages
                 pause
-                return
                 ;;
             2)
                 upgrade_packages
                 pause
-                return
                 ;;
             3)
                 check_brewfile
                 pause
-                return
                 ;;
             4)
                 check_manual_apps
                 pause
-                return
                 ;;
             5)
                 list_packages
                 pause
-                return
                 ;;
             6)
                 edit_brewfile
                 pause
-                return
                 ;;
             7)
                 return
@@ -766,22 +769,18 @@ handle_git_menu() {
             1)
                 setup_git_config
                 pause
-                return
                 ;;
             2)
                 setup_git_aliases
                 pause
-                return
                 ;;
             3)
                 setup_git_recommended
                 pause
-                return
                 ;;
             4)
                 view_git_aliases
                 pause
-                return
                 ;;
             5)
                 return
@@ -810,22 +809,18 @@ handle_shell_menu() {
             1)
                 setup_shell_aliases
                 pause
-                return
                 ;;
             2)
                 view_shell_aliases
                 pause
-                return
                 ;;
             3)
                 view_local_shell_aliases
                 pause
-                return
                 ;;
             4)
                 edit_shell_aliases
                 pause
-                return
                 ;;
             5)
                 return
@@ -854,27 +849,22 @@ handle_docker_menu() {
             1)
                 docker_status
                 pause
-                return
                 ;;
             2)
                 docker_list_images
                 pause
-                return
                 ;;
             3)
                 docker_compose_up
                 pause
-                return
                 ;;
             4)
                 docker_compose_down
                 pause
-                return
                 ;;
             5)
                 docker_cleanup
                 pause
-                return
                 ;;
             6)
                 return
@@ -936,37 +926,30 @@ handle_pyenv_menu() {
             1)
                 pyenv_current
                 pause
-                return
                 ;;
             2)
                 pyenv_list_installed
                 pause
-                return
                 ;;
             3)
                 pyenv_list_available
                 pause
-                return
                 ;;
             4)
                 pyenv_install_version
                 pause
-                return
                 ;;
             5)
                 pyenv_set_global
                 pause
-                return
                 ;;
             6)
                 pyenv_set_local
                 pause
-                return
                 ;;
             7)
                 pyenv_uninstall_version
                 pause
-                return
                 ;;
             8)
                 return
@@ -995,37 +978,30 @@ handle_rbenv_menu() {
             1)
                 rbenv_current
                 pause
-                return
                 ;;
             2)
                 rbenv_list_installed
                 pause
-                return
                 ;;
             3)
                 rbenv_list_available
                 pause
-                return
                 ;;
             4)
                 rbenv_install_version
                 pause
-                return
                 ;;
             5)
                 rbenv_set_global
                 pause
-                return
                 ;;
             6)
                 rbenv_set_local
                 pause
-                return
                 ;;
             7)
                 rbenv_uninstall_version
                 pause
-                return
                 ;;
             8)
                 return
@@ -1054,37 +1030,30 @@ handle_nvm_menu() {
             1)
                 nvm_current
                 pause
-                return
                 ;;
             2)
                 nvm_list_installed
                 pause
-                return
                 ;;
             3)
                 nvm_list_available
                 pause
-                return
                 ;;
             4)
                 nvm_install_version
                 pause
-                return
                 ;;
             5)
                 nvm_set_default
                 pause
-                return
                 ;;
             6)
                 nvm_set_local
                 pause
-                return
                 ;;
             7)
                 nvm_uninstall_version
                 pause
-                return
                 ;;
             8)
                 return

@@ -31,6 +31,7 @@ macify/
 
 - **[Python Development Setup](docs/PYTHON_SETUP.md)** — pyenv, poetry, and pip configuration
 - **[Ruby Development Setup](docs/RUBY_SETUP.md)** — rbenv, Bundler, Rails, and RSpec configuration
+- **[Node.js Development Setup](docs/NODE_SETUP.md)** — nvm, npm, and pnpm/Yarn configuration
 
 ## Notes
 
