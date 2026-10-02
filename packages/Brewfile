@@ -81,7 +81,8 @@ cask 'stats'
 cask 'anydesk'
 
 # AI CLI Tools
-brew 'opencode'
+tap 'anomalyco/tap'
+brew 'anomalyco/tap/opencode'
 cask 'opencode-desktop'
 cask 'copilot-cli'
 cask 'claude'
