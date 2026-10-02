@@ -43,7 +43,7 @@ show_brew_menu() {
     echo "6) ${BLUE}Edit${NC} - Open Brewfile in default editor"
     echo "7) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -58,7 +58,7 @@ show_git_menu() {
     echo "4) ${BLUE}View Aliases${NC} - View all Git aliases"
     echo "5) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -73,7 +73,7 @@ show_shell_menu() {
     echo "4) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
     echo "5) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -89,7 +89,7 @@ show_docker_menu() {
     echo "5) ${YELLOW}Clean Up${NC} - Remove unused containers, images, volumes, and cache"
     echo "6) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -103,7 +103,7 @@ show_versions_menu() {
     echo "3) ${YELLOW}nvm${NC} - Node"
     echo "4) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -121,7 +121,7 @@ show_pyenv_menu() {
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
     echo "8) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -139,7 +139,7 @@ show_rbenv_menu() {
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
     echo "8) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -157,7 +157,7 @@ show_nvm_menu() {
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
     echo "8) ${RED}Back${NC}"
     echo ""
-    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
 }
 
@@ -703,8 +703,8 @@ handle_brew_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -757,8 +757,8 @@ handle_git_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -801,8 +801,8 @@ handle_shell_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -845,8 +845,8 @@ handle_docker_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -894,8 +894,8 @@ handle_versions_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -927,8 +927,8 @@ handle_pyenv_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -986,8 +986,8 @@ handle_rbenv_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
@@ -1045,8 +1045,8 @@ handle_nvm_menu() {
 
         # Check if ESC was pressed
         if [[ "$choice" == $'\033' ]]; then
-            echo -e "\n${BLUE}Goodbye!${NC}"
-            exit 0
+            echo ""
+            return
         fi
         echo ""
 
