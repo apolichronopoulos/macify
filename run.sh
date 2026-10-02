@@ -11,6 +11,7 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
 NC='\033[0m' # No Color
 
 show_main_menu() {
@@ -22,7 +23,8 @@ show_main_menu() {
     echo "2) ${CYAN}Git${NC}"
     echo "3) ${YELLOW}Shell${NC}"
     echo "4) ${BLUE}Docker${NC}"
-    echo "5) ${RED}Quit${NC}"
+    echo "5) ${MAGENTA}Versions${NC}"
+    echo "6) ${RED}Quit${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -86,6 +88,74 @@ show_docker_menu() {
     echo "4) ${YELLOW}Compose Down${NC} - Stop a project's docker compose"
     echo "5) ${YELLOW}Clean Up${NC} - Remove unused containers, images, volumes, and cache"
     echo "6) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_versions_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${MAGENTA}Versions${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${GREEN}pyenv${NC} - Python"
+    echo "2) ${RED}rbenv${NC} - Ruby"
+    echo "3) ${YELLOW}nvm${NC} - Node"
+    echo "4) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_pyenv_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${GREEN}pyenv${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${BLUE}Current${NC} - Show global, local, and active version"
+    echo "2) ${BLUE}Installed${NC} - List installed versions"
+    echo "3) ${BLUE}Available${NC} - List versions available to install"
+    echo "4) ${GREEN}Install${NC} - Install a new version"
+    echo "5) ${GREEN}Set Global${NC} - Set the global default version"
+    echo "6) ${GREEN}Set Local${NC} - Set the version for a project directory"
+    echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
+    echo "8) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_rbenv_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${RED}rbenv${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${BLUE}Current${NC} - Show global, local, and active version"
+    echo "2) ${BLUE}Installed${NC} - List installed versions"
+    echo "3) ${BLUE}Available${NC} - List versions available to install"
+    echo "4) ${GREEN}Install${NC} - Install a new version"
+    echo "5) ${GREEN}Set Global${NC} - Set the global default version"
+    echo "6) ${GREEN}Set Local${NC} - Set the version for a project directory"
+    echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
+    echo "8) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_nvm_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${YELLOW}nvm${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${BLUE}Current${NC} - Show active, default, and local (.nvmrc) version"
+    echo "2) ${BLUE}Installed${NC} - List installed versions"
+    echo "3) ${BLUE}Available${NC} - List versions available to install"
+    echo "4) ${GREEN}Install${NC} - Install a new version"
+    echo "5) ${GREEN}Set Default${NC} - Set the default version (nvm alias default)"
+    echo "6) ${GREEN}Set Local${NC} - Write .nvmrc for a project directory and switch"
+    echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
+    echo "8) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -204,6 +274,279 @@ docker_cleanup() {
         echo -e "${GREEN}✓ Cleanup complete${NC}"
     else
         echo -e "${YELLOW}Cleanup cancelled${NC}"
+    fi
+}
+
+check_tool() {
+    local tool="$1"
+    local hint="$2"
+    if ! command -v "$tool" &> /dev/null; then
+        echo -e "${RED}✗ ${tool} not found.${NC} ${hint}"
+        return 1
+    fi
+}
+
+load_nvm() {
+    export NVM_DIR="${NVM_DIR:-$HOME/.nvm}"
+    if [ -s "$NVM_DIR/nvm.sh" ]; then
+        \. "$NVM_DIR/nvm.sh"
+    elif [ -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
+        \. "/opt/homebrew/opt/nvm/nvm.sh"
+    else
+        echo -e "${RED}✗ nvm not found.${NC} Install with: brew install nvm"
+        return 1
+    fi
+}
+
+# --- pyenv ---
+
+pyenv_current() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Global version:${NC}"
+    pyenv global
+    echo ""
+    echo -e "${BLUE}Local version (this directory):${NC}"
+    pyenv local 2>/dev/null || echo "  (no local version set)"
+    echo ""
+    echo -e "${BLUE}Active version:${NC}"
+    pyenv version
+}
+
+pyenv_list_installed() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Installed Python versions:${NC}"
+    echo ""
+    pyenv versions
+}
+
+pyenv_list_available() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    read "?Filter (e.g. 3.12, leave empty for all): " filter
+    echo -e "${BLUE}Available Python versions:${NC}"
+    echo ""
+    if [ -n "$filter" ]; then
+        pyenv install --list | grep -i "$filter"
+    else
+        pyenv install --list
+    fi
+}
+
+pyenv_install_version() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    read "?Enter version to install (e.g. 3.12.4): " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    pyenv install "$version"
+    echo -e "${GREEN}✓ Installed Python ${version}${NC}"
+}
+
+pyenv_set_global() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    pyenv versions
+    echo ""
+    read "?Enter version to set as global: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    pyenv global "$version"
+    echo -e "${GREEN}✓ Global Python version set to ${version}${NC}"
+    python --version
+}
+
+pyenv_set_local() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    pyenv versions
+    echo ""
+    read "?Enter project directory (default: current directory): " project_dir
+    project_dir="${project_dir:-.}"
+    read "?Enter version to set as local: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    (cd "${project_dir}" && pyenv local "$version")
+    echo -e "${GREEN}✓ Local Python version set to ${version} in ${project_dir}${NC}"
+}
+
+pyenv_uninstall_version() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    pyenv versions
+    echo ""
+    read "?Enter version to uninstall: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    read "?Uninstall Python ${version}? (y/N): " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        pyenv uninstall "$version"
+        echo -e "${GREEN}✓ Uninstalled ${version}${NC}"
+    else
+        echo -e "${YELLOW}Cancelled${NC}"
+    fi
+}
+
+# --- rbenv ---
+
+rbenv_current() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Global version:${NC}"
+    rbenv global
+    echo ""
+    echo -e "${BLUE}Local version (this directory):${NC}"
+    rbenv local 2>/dev/null || echo "  (no local version set)"
+    echo ""
+    echo -e "${BLUE}Active version:${NC}"
+    rbenv version
+}
+
+rbenv_list_installed() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Installed Ruby versions:${NC}"
+    echo ""
+    rbenv versions
+}
+
+rbenv_list_available() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    read "?Filter (e.g. 3.4, leave empty for all): " filter
+    echo -e "${BLUE}Available Ruby versions:${NC}"
+    echo ""
+    if [ -n "$filter" ]; then
+        rbenv install -l | grep -i "$filter"
+    else
+        rbenv install -l
+    fi
+}
+
+rbenv_install_version() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    read "?Enter version to install (e.g. 3.4.2): " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    rbenv install "$version"
+    echo -e "${GREEN}✓ Installed Ruby ${version}${NC}"
+}
+
+rbenv_set_global() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    rbenv versions
+    echo ""
+    read "?Enter version to set as global: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    rbenv global "$version"
+    echo -e "${GREEN}✓ Global Ruby version set to ${version}${NC}"
+    ruby -v
+}
+
+rbenv_set_local() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    rbenv versions
+    echo ""
+    read "?Enter project directory (default: current directory): " project_dir
+    project_dir="${project_dir:-.}"
+    read "?Enter version to set as local: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    (cd "${project_dir}" && rbenv local "$version")
+    echo -e "${GREEN}✓ Local Ruby version set to ${version} in ${project_dir}${NC}"
+}
+
+rbenv_uninstall_version() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    rbenv versions
+    echo ""
+    read "?Enter version to uninstall: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    read "?Uninstall Ruby ${version}? (y/N): " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        rbenv uninstall "$version"
+        echo -e "${GREEN}✓ Uninstalled ${version}${NC}"
+    else
+        echo -e "${YELLOW}Cancelled${NC}"
+    fi
+}
+
+# --- nvm ---
+
+nvm_current() {
+    load_nvm || return
+    echo -e "${BLUE}Active version:${NC}"
+    nvm current
+    echo ""
+    echo -e "${BLUE}Default alias:${NC}"
+    nvm alias default
+    echo ""
+    echo -e "${BLUE}Local version (.nvmrc in this directory):${NC}"
+    if [ -f ".nvmrc" ]; then
+        cat .nvmrc
+    else
+        echo "  (no .nvmrc found)"
+    fi
+}
+
+nvm_list_installed() {
+    load_nvm || return
+    echo -e "${BLUE}Installed Node versions:${NC}"
+    echo ""
+    nvm list
+}
+
+nvm_list_available() {
+    load_nvm || return
+    read "?Filter (e.g. 20, leave empty for LTS releases): " filter
+    echo -e "${BLUE}Available Node versions:${NC}"
+    echo ""
+    if [ -n "$filter" ]; then
+        nvm ls-remote | grep -i "$filter"
+    else
+        nvm ls-remote --lts
+    fi
+}
+
+nvm_install_version() {
+    load_nvm || return
+    read "?Enter version to install (e.g. 24, or --lts): " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    nvm install "$version"
+    echo -e "${GREEN}✓ Installed Node ${version}${NC}"
+}
+
+nvm_set_default() {
+    load_nvm || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    nvm list
+    echo ""
+    read "?Enter version to set as default (e.g. 24, or 'node' for latest installed): " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    nvm alias default "$version"
+    nvm use default
+    echo -e "${GREEN}✓ Default Node version set to ${version}${NC}"
+    node -v
+}
+
+nvm_set_local() {
+    load_nvm || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    nvm list
+    echo ""
+    read "?Enter project directory (default: current directory): " project_dir
+    project_dir="${project_dir:-.}"
+    read "?Enter version for .nvmrc: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    echo "$version" > "${project_dir}/.nvmrc"
+    (cd "${project_dir}" && nvm use)
+    echo -e "${GREEN}✓ Wrote ${version} to ${project_dir}/.nvmrc and switched${NC}"
+}
+
+nvm_uninstall_version() {
+    load_nvm || return
+    echo -e "${BLUE}Installed versions:${NC}"
+    nvm list
+    echo ""
+    read "?Enter version to uninstall: " version
+    [ -z "$version" ] && { echo -e "${YELLOW}No version entered${NC}"; return; }
+    read "?Uninstall Node ${version}? (y/N): " confirm
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        nvm uninstall "$version"
+        echo -e "${GREEN}✓ Uninstalled ${version}${NC}"
+    else
+        echo -e "${YELLOW}Cancelled${NC}"
     fi
 }
 
@@ -334,6 +677,9 @@ main() {
                 handle_docker_menu
                 ;;
             5)
+                handle_versions_menu
+                ;;
+            6)
                 echo -e "${BLUE}Goodbye!${NC}"
                 exit 0
                 ;;
@@ -507,6 +853,195 @@ handle_docker_menu() {
                 return
                 ;;
             6)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_versions_menu() {
+    while true; do
+        show_versions_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                handle_pyenv_menu
+                ;;
+            2)
+                handle_rbenv_menu
+                ;;
+            3)
+                handle_nvm_menu
+                ;;
+            4)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_pyenv_menu() {
+    while true; do
+        show_pyenv_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                pyenv_current
+                return
+                ;;
+            2)
+                pyenv_list_installed
+                return
+                ;;
+            3)
+                pyenv_list_available
+                return
+                ;;
+            4)
+                pyenv_install_version
+                return
+                ;;
+            5)
+                pyenv_set_global
+                return
+                ;;
+            6)
+                pyenv_set_local
+                return
+                ;;
+            7)
+                pyenv_uninstall_version
+                return
+                ;;
+            8)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_rbenv_menu() {
+    while true; do
+        show_rbenv_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                rbenv_current
+                return
+                ;;
+            2)
+                rbenv_list_installed
+                return
+                ;;
+            3)
+                rbenv_list_available
+                return
+                ;;
+            4)
+                rbenv_install_version
+                return
+                ;;
+            5)
+                rbenv_set_global
+                return
+                ;;
+            6)
+                rbenv_set_local
+                return
+                ;;
+            7)
+                rbenv_uninstall_version
+                return
+                ;;
+            8)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_nvm_menu() {
+    while true; do
+        show_nvm_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                nvm_current
+                return
+                ;;
+            2)
+                nvm_list_installed
+                return
+                ;;
+            3)
+                nvm_list_available
+                return
+                ;;
+            4)
+                nvm_install_version
+                return
+                ;;
+            5)
+                nvm_set_default
+                return
+                ;;
+            6)
+                nvm_set_local
+                return
+                ;;
+            7)
+                nvm_uninstall_version
+                return
+                ;;
+            8)
                 return
                 ;;
             *)

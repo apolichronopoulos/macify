@@ -28,3 +28,4 @@
 *.pem
 *.p12
 
+/.python-version
