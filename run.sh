@@ -21,7 +21,8 @@ show_main_menu() {
     echo "1) ${GREEN}Brew${NC}"
     echo "2) ${CYAN}Git${NC}"
     echo "3) ${YELLOW}Shell${NC}"
-    echo "4) ${RED}Quit${NC}"
+    echo "4) ${BLUE}Docker${NC}"
+    echo "5) ${RED}Quit${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -69,6 +70,22 @@ show_shell_menu() {
     echo "3) ${BLUE}View Local Aliases${NC} - View aliases from ~/.bashrc and ~/.zshrc"
     echo "4) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
     echo "5) ${RED}Back${NC}"
+    echo ""
+    echo -e "${BLUE}Press ESC to exit${NC}"
+    echo ""
+}
+
+show_docker_menu() {
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo -e "${BLUE}Docker${NC}"
+    echo -e "${BLUE}═══════════════════════════════════════${NC}"
+    echo ""
+    echo "1) ${GREEN}Status${NC} - Show running containers"
+    echo "2) ${BLUE}Images${NC} - List all Docker images"
+    echo "3) ${GREEN}Compose Up${NC} - Start a project's docker compose"
+    echo "4) ${YELLOW}Compose Down${NC} - Stop a project's docker compose"
+    echo "5) ${YELLOW}Clean Up${NC} - Remove unused containers, images, volumes, and cache"
+    echo "6) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to exit${NC}"
     echo ""
@@ -128,6 +145,66 @@ list_packages() {
     grep -E "^brew|^cask" "${BREWFILE_PATH}" | sed 's/^/  /'
     echo ""
     echo -e "${BLUE}Total:${NC} $(grep -c -E "^brew|^cask" "${BREWFILE_PATH}") packages"
+}
+
+docker_status() {
+    echo -e "${BLUE}Running containers:${NC}"
+    echo ""
+    docker ps
+}
+
+docker_list_images() {
+    echo -e "${BLUE}Docker images:${NC}"
+    echo ""
+    docker images
+}
+
+docker_compose_up() {
+    read "?Enter project directory (default: current directory): " project_dir
+    project_dir="${project_dir:-.}"
+
+    if [ -f "${project_dir}/docker-compose.yml" ] || [ -f "${project_dir}/docker-compose.yaml" ] || [ -f "${project_dir}/compose.yaml" ]; then
+        echo -e "${GREEN}Starting compose project in ${project_dir}...${NC}"
+        (cd "${project_dir}" && docker compose up -d)
+        echo -e "${GREEN}✓ Compose project started${NC}"
+    else
+        echo -e "${RED}✗ No compose file found in ${project_dir}${NC}"
+    fi
+}
+
+docker_compose_down() {
+    read "?Enter project directory (default: current directory): " project_dir
+    project_dir="${project_dir:-.}"
+
+    if [ -f "${project_dir}/docker-compose.yml" ] || [ -f "${project_dir}/docker-compose.yaml" ] || [ -f "${project_dir}/compose.yaml" ]; then
+        echo -e "${YELLOW}Stopping compose project in ${project_dir}...${NC}"
+        (cd "${project_dir}" && docker compose down)
+        echo -e "${GREEN}✓ Compose project stopped${NC}"
+    else
+        echo -e "${RED}✗ No compose file found in ${project_dir}${NC}"
+    fi
+}
+
+docker_cleanup() {
+    echo -e "${YELLOW}This removes stopped containers, unused networks, dangling images, and build cache.${NC}"
+    read "?Continue? (y/N): " confirm
+
+    if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        docker system prune -f
+        echo ""
+        read "?Also remove unused (not just dangling) images? (y/N): " confirm_images
+        if [[ "$confirm_images" == "y" || "$confirm_images" == "Y" ]]; then
+            docker image prune -a -f
+        fi
+        echo ""
+        read "?Also remove unused volumes? (y/N): " confirm_volumes
+        if [[ "$confirm_volumes" == "y" || "$confirm_volumes" == "Y" ]]; then
+            docker volume prune -f
+        fi
+        echo -e "${GREEN}✓ Cleanup complete${NC}"
+    else
+        echo -e "${YELLOW}Cleanup cancelled${NC}"
+    fi
 }
 
 setup_git_config() {
@@ -254,6 +331,9 @@ main() {
                 handle_shell_menu
                 ;;
             4)
+                handle_docker_menu
+                ;;
+            5)
                 echo -e "${BLUE}Goodbye!${NC}"
                 exit 0
                 ;;
@@ -383,6 +463,50 @@ handle_shell_menu() {
                 return
                 ;;
             5)
+                return
+                ;;
+            *)
+                echo -e "${RED}Invalid option. Please try again.${NC}"
+                echo ""
+                ;;
+        esac
+    done
+}
+
+handle_docker_menu() {
+    while true; do
+        show_docker_menu
+        read -k 1 "?Choose an option: " choice
+
+        # Check if ESC was pressed
+        if [[ "$choice" == $'\033' ]]; then
+            echo -e "\n${BLUE}Goodbye!${NC}"
+            exit 0
+        fi
+        echo ""
+
+        case $choice in
+            1)
+                docker_status
+                return
+                ;;
+            2)
+                docker_list_images
+                return
+                ;;
+            3)
+                docker_compose_up
+                return
+                ;;
+            4)
+                docker_compose_down
+                return
+                ;;
+            5)
+                docker_cleanup
+                return
+                ;;
+            6)
                 return
                 ;;
             *)
