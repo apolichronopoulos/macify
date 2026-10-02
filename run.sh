@@ -277,6 +277,11 @@ docker_cleanup() {
     fi
 }
 
+pause() {
+    echo ""
+    read "?Press Enter to continue... "
+}
+
 check_tool() {
     local tool="$1"
     local hint="$2"
@@ -706,26 +711,32 @@ handle_brew_menu() {
         case $choice in
             1)
                 install_packages
+                pause
                 return
                 ;;
             2)
                 upgrade_packages
+                pause
                 return
                 ;;
             3)
                 check_brewfile
+                pause
                 return
                 ;;
             4)
                 check_manual_apps
+                pause
                 return
                 ;;
             5)
                 list_packages
+                pause
                 return
                 ;;
             6)
                 edit_brewfile
+                pause
                 return
                 ;;
             7)
@@ -754,18 +765,22 @@ handle_git_menu() {
         case $choice in
             1)
                 setup_git_config
+                pause
                 return
                 ;;
             2)
                 setup_git_aliases
+                pause
                 return
                 ;;
             3)
                 setup_git_recommended
+                pause
                 return
                 ;;
             4)
                 view_git_aliases
+                pause
                 return
                 ;;
             5)
@@ -794,18 +809,22 @@ handle_shell_menu() {
         case $choice in
             1)
                 setup_shell_aliases
+                pause
                 return
                 ;;
             2)
                 view_shell_aliases
+                pause
                 return
                 ;;
             3)
                 view_local_shell_aliases
+                pause
                 return
                 ;;
             4)
                 edit_shell_aliases
+                pause
                 return
                 ;;
             5)
@@ -834,22 +853,27 @@ handle_docker_menu() {
         case $choice in
             1)
                 docker_status
+                pause
                 return
                 ;;
             2)
                 docker_list_images
+                pause
                 return
                 ;;
             3)
                 docker_compose_up
+                pause
                 return
                 ;;
             4)
                 docker_compose_down
+                pause
                 return
                 ;;
             5)
                 docker_cleanup
+                pause
                 return
                 ;;
             6)
@@ -911,30 +935,37 @@ handle_pyenv_menu() {
         case $choice in
             1)
                 pyenv_current
+                pause
                 return
                 ;;
             2)
                 pyenv_list_installed
+                pause
                 return
                 ;;
             3)
                 pyenv_list_available
+                pause
                 return
                 ;;
             4)
                 pyenv_install_version
+                pause
                 return
                 ;;
             5)
                 pyenv_set_global
+                pause
                 return
                 ;;
             6)
                 pyenv_set_local
+                pause
                 return
                 ;;
             7)
                 pyenv_uninstall_version
+                pause
                 return
                 ;;
             8)
@@ -963,30 +994,37 @@ handle_rbenv_menu() {
         case $choice in
             1)
                 rbenv_current
+                pause
                 return
                 ;;
             2)
                 rbenv_list_installed
+                pause
                 return
                 ;;
             3)
                 rbenv_list_available
+                pause
                 return
                 ;;
             4)
                 rbenv_install_version
+                pause
                 return
                 ;;
             5)
                 rbenv_set_global
+                pause
                 return
                 ;;
             6)
                 rbenv_set_local
+                pause
                 return
                 ;;
             7)
                 rbenv_uninstall_version
+                pause
                 return
                 ;;
             8)
@@ -1015,30 +1053,37 @@ handle_nvm_menu() {
         case $choice in
             1)
                 nvm_current
+                pause
                 return
                 ;;
             2)
                 nvm_list_installed
+                pause
                 return
                 ;;
             3)
                 nvm_list_available
+                pause
                 return
                 ;;
             4)
                 nvm_install_version
+                pause
                 return
                 ;;
             5)
                 nvm_set_default
+                pause
                 return
                 ;;
             6)
                 nvm_set_local
+                pause
                 return
                 ;;
             7)
                 nvm_uninstall_version
+                pause
                 return
                 ;;
             8)
