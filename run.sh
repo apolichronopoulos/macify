@@ -126,7 +126,9 @@ show_pyenv_menu() {
     echo "5) ${GREEN}Set Global${NC} - Set the global default version"
     echo "6) ${GREEN}Set Local${NC} - Set the version for a project directory"
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
-    echo "8) ${RED}Back${NC}"
+    echo "8) ${BLUE}Which${NC} - Show resolved paths for pyenv, python, python3, pip, pip3"
+    echo "9) ${RED}Back${NC}"
+    echo "s) ${GREEN}Setup Shell Init${NC} - Add pyenv init to ~/.zshrc and ~/.bashrc if missing"
     echo ""
     echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
@@ -145,7 +147,9 @@ show_rbenv_menu() {
     echo "5) ${GREEN}Set Global${NC} - Set the global default version"
     echo "6) ${GREEN}Set Local${NC} - Set the version for a project directory"
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
-    echo "8) ${RED}Back${NC}"
+    echo "8) ${BLUE}Which${NC} - Show resolved paths for rbenv, ruby, gem, bundle"
+    echo "9) ${RED}Back${NC}"
+    echo "s) ${GREEN}Setup Shell Init${NC} - Add rbenv init to ~/.zshrc and ~/.bashrc if missing"
     echo ""
     echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
@@ -164,7 +168,9 @@ show_nvm_menu() {
     echo "5) ${GREEN}Set Default${NC} - Set the default version (nvm alias default)"
     echo "6) ${GREEN}Set Local${NC} - Write .nvmrc for a project directory and switch"
     echo "7) ${YELLOW}Uninstall${NC} - Remove an installed version"
-    echo "8) ${RED}Back${NC}"
+    echo "8) ${BLUE}Which${NC} - Show resolved paths for nvm, node, npm, npx"
+    echo "9) ${RED}Back${NC}"
+    echo "s) ${GREEN}Setup Shell Init${NC} - Add nvm init to ~/.zshrc and ~/.bashrc if missing"
     echo ""
     echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
@@ -291,6 +297,18 @@ pause() {
     read "?Press Enter to continue... "
 }
 
+print_which() {
+    local cmd resolved
+    for cmd in "$@"; do
+        resolved=$(command -v "$cmd" 2>/dev/null) || true
+        if [ -n "$resolved" ]; then
+            echo -e "  ${GREEN}✓${NC} $(printf '%-10s' "$cmd") ${resolved}"
+        else
+            echo -e "  ${RED}✗${NC} $(printf '%-10s' "$cmd") not found"
+        fi
+    done
+}
+
 check_tool() {
     local tool="$1"
     local hint="$2"
@@ -394,6 +412,42 @@ pyenv_uninstall_version() {
     fi
 }
 
+pyenv_which() {
+    echo -e "${BLUE}Resolved paths:${NC}"
+    echo ""
+    print_which pyenv python python3 pip pip3
+}
+
+pyenv_setup_shell_init() {
+    check_tool pyenv "Install with: brew install pyenv" || return
+    echo -e "${BLUE}Checking shell configs for pyenv init...${NC}"
+    echo ""
+
+    local rc
+    for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
+        if [ ! -f "$rc" ]; then
+            echo -e "  ${YELLOW}⚠${NC} $(basename "$rc") not found, skipping"
+            continue
+        fi
+
+        if grep -q "pyenv init" "$rc"; then
+            echo -e "  ${YELLOW}⊘${NC} $(basename "$rc") already has pyenv init"
+            continue
+        fi
+
+        {
+            echo ""
+            echo "# pyenv init"
+            echo 'export PATH="$HOME/.pyenv/bin:$PATH"'
+            echo 'eval "$(pyenv init -)"'
+        } >> "$rc"
+        echo -e "  ${GREEN}✓${NC} Added pyenv init to $(basename "$rc")"
+    done
+
+    echo ""
+    echo -e "${BLUE}Tip:${NC} Restart your shell or run: source ~/.zshrc"
+}
+
 # --- rbenv ---
 
 rbenv_current() {
@@ -474,6 +528,42 @@ rbenv_uninstall_version() {
     else
         echo -e "${YELLOW}Cancelled${NC}"
     fi
+}
+
+rbenv_which() {
+    echo -e "${BLUE}Resolved paths:${NC}"
+    echo ""
+    print_which rbenv ruby gem bundle
+}
+
+rbenv_setup_shell_init() {
+    check_tool rbenv "Install with: brew install rbenv ruby-build" || return
+    echo -e "${BLUE}Checking shell configs for rbenv init...${NC}"
+    echo ""
+
+    local rc
+    for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
+        if [ ! -f "$rc" ]; then
+            echo -e "  ${YELLOW}⚠${NC} $(basename "$rc") not found, skipping"
+            continue
+        fi
+
+        if grep -q "rbenv init" "$rc"; then
+            echo -e "  ${YELLOW}⊘${NC} $(basename "$rc") already has rbenv init"
+            continue
+        fi
+
+        {
+            echo ""
+            echo "# rbenv init"
+            echo 'export PATH="$HOME/.rbenv/shims:$PATH"'
+            echo 'eval "$(rbenv init - zsh)"'
+        } >> "$rc"
+        echo -e "  ${GREEN}✓${NC} Added rbenv init to $(basename "$rc")"
+    done
+
+    echo ""
+    echo -e "${BLUE}Tip:${NC} Restart your shell or run: source ~/.zshrc"
 }
 
 # --- nvm ---
@@ -562,6 +652,46 @@ nvm_uninstall_version() {
     else
         echo -e "${YELLOW}Cancelled${NC}"
     fi
+}
+
+nvm_which() {
+    load_nvm &> /dev/null || true
+    echo -e "${BLUE}Resolved paths:${NC}"
+    echo ""
+    print_which nvm node npm npx
+}
+
+nvm_setup_shell_init() {
+    if [ ! -s "$HOME/.nvm/nvm.sh" ] && [ ! -s "/opt/homebrew/opt/nvm/nvm.sh" ]; then
+        echo -e "${RED}✗ nvm not found.${NC} Install with: brew install nvm"
+        return
+    fi
+    echo -e "${BLUE}Checking shell configs for nvm init...${NC}"
+    echo ""
+
+    local rc
+    for rc in "$HOME/.zshrc" "$HOME/.bashrc"; do
+        if [ ! -f "$rc" ]; then
+            echo -e "  ${YELLOW}⚠${NC} $(basename "$rc") not found, skipping"
+            continue
+        fi
+
+        if grep -q "nvm.sh" "$rc"; then
+            echo -e "  ${YELLOW}⊘${NC} $(basename "$rc") already has nvm init"
+            continue
+        fi
+
+        {
+            echo ""
+            echo "# nvm init"
+            echo 'export NVM_DIR="$HOME/.nvm"'
+            echo '[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"'
+        } >> "$rc"
+        echo -e "  ${GREEN}✓${NC} Added nvm init to $(basename "$rc")"
+    done
+
+    echo ""
+    echo -e "${BLUE}Tip:${NC} Restart your shell or run: source ~/.zshrc"
 }
 
 setup_git_config() {
@@ -952,7 +1082,15 @@ handle_pyenv_menu() {
                 pause
                 ;;
             8)
+                pyenv_which
+                pause
+                ;;
+            9)
                 return
+                ;;
+            s)
+                pyenv_setup_shell_init
+                pause
                 ;;
             *)
                 echo -e "${RED}Invalid option. Please try again.${NC}"
@@ -1004,7 +1142,15 @@ handle_rbenv_menu() {
                 pause
                 ;;
             8)
+                rbenv_which
+                pause
+                ;;
+            9)
                 return
+                ;;
+            s)
+                rbenv_setup_shell_init
+                pause
                 ;;
             *)
                 echo -e "${RED}Invalid option. Please try again.${NC}"
@@ -1056,7 +1202,15 @@ handle_nvm_menu() {
                 pause
                 ;;
             8)
+                nvm_which
+                pause
+                ;;
+            9)
                 return
+                ;;
+            s)
+                nvm_setup_shell_init
+                pause
                 ;;
             *)
                 echo -e "${RED}Invalid option. Please try again.${NC}"
