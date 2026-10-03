@@ -27,6 +27,7 @@ brew 'fd'
 brew 'tig'
 brew 'tree'
 brew 'logcli'
+brew 'mas'
 
 
 # Programming Languages
@@ -75,7 +76,9 @@ cask 'google-gemini'
 
 # Utilities
 cask 'iterm2'
+
 cask 'rectangle'
+cask 'dockdoor'
 cask 'maccy'
 cask 'stats'
 cask 'anydesk'
@@ -88,3 +91,6 @@ cask 'copilot-cli'
 cask 'claude'
 cask 'claude-code'
 cask 'antigravity'
+
+# Mac App Store (requires 'mas' and being signed in to the App Store)
+mas 'Amphetamine', id: 937984704
