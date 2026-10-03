@@ -14,26 +14,21 @@ echo ""
 
 count=0
 
-# Extract aliases from config and apply them
+# Extract aliases from config and apply them.
+# Parsed via `git config`, not sed/bash, so values quoted in the file
+# (e.g. containing `!`, `&&`, or spaces) are unquoted correctly instead of
+# having their literal quote characters baked into the stored alias value.
 while IFS= read -r line; do
-    # Skip empty lines
     [ -z "$line" ] && continue
 
-    # Remove leading whitespace
-    line="${line#[[:space:]]}"
+    full_key="${line%% *}"      # e.g. alias.master
+    value="${line#* }"
+    key="${full_key#alias.}"
 
-    # Extract key (everything before first space and =)
-    key="${line%%[[:space:]]*}"
-    [ -z "$key" ] && continue
-
-    # Extract value (everything after = )
-    value="${line#*= }"
-
-    # Apply the alias
     git config --global alias."$key" "$value"
     echo -e "  ${GREEN}✓${NC} git $key"
     ((count++))
-done < <(sed -n '/^\[alias\]/,/^\[/p' "$CONFIG_FILE" | grep -v '^\[')
+done < <(git config -f "$CONFIG_FILE" --get-regexp '^alias\.')
 
 echo ""
 if [ $count -gt 0 ]; then
