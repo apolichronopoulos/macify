@@ -2,8 +2,10 @@
 
 set -e
 
-BREWFILE_PATH="packages/Brewfile"
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve the repo dir from this script's real path (follows symlinks), so
+# run.sh works from any directory and via the `macify` symlink
+SCRIPT_DIR="${0:A:h}"
+BREWFILE_PATH="${SCRIPT_DIR}/packages/Brewfile"
 
 # Colors for output
 RED='\033[0;31m'
@@ -75,7 +77,8 @@ show_shell_menu() {
     echo "2) ${BLUE}View Repo Aliases${NC} - View aliases from the repo"
     echo "3) ${BLUE}View Local Aliases${NC} - View aliases from ~/.bashrc and ~/.zshrc"
     echo "4) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
-    echo "5) ${RED}Back${NC}"
+    echo "5) ${GREEN}Install Command${NC} - Install 'macify' command into ~/.local/bin"
+    echo "6) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
@@ -710,6 +713,10 @@ setup_shell_aliases() {
     bash "${SCRIPT_DIR}/setup/shell-aliases.sh"
 }
 
+install_macify_command() {
+    bash "${SCRIPT_DIR}/setup/install-command.sh"
+}
+
 view_shell_aliases() {
     echo -e "${BLUE}Repository Shell Aliases:${NC}"
     echo ""
@@ -953,6 +960,10 @@ handle_shell_menu() {
                 pause
                 ;;
             5)
+                install_macify_command
+                pause
+                ;;
+            6)
                 return
                 ;;
             *)

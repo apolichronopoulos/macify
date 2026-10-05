@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"
 ALIASES_FILE="${SCRIPT_DIR}/../.config/.shell_aliases"
 HOME_ALIASES="$HOME/.shell_aliases"
 BASHRC="$HOME/.bashrc"

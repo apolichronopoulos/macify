@@ -22,6 +22,8 @@ macify/
 
 ## Usage
 
+- **Interactive menu:** `./run.sh`, or `macify` from anywhere once installed
+- **Install the `macify` command:** `setup/install-command.sh` (or Shell → Install Command in the menu) — Symlinks `run.sh` into `~/.local/bin/macify`
 - **Install packages:** `brew bundle install --file=packages/Brewfile`
 - **Setup Git configuration:** `setup/git-config.sh` — Copies `.gitconfig` and `.gitconfig-apo` to home directory
 - **Setup shell aliases:** `setup/shell-aliases.sh` — Configures shell aliases and environment

@@ -48,8 +48,11 @@ once a setup script is run.
   Match this style in any new script rather than introducing a different
   logging convention.
 - Scripts derive their own directory via
-  `SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"` and build
-  paths relative to it — don't hardcode absolute paths.
+  `SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)"` (the
+  `:-$0` fallback is needed because zsh doesn't set `BASH_SOURCE`, and
+  these scripts run under both bash and zsh) and build paths relative to
+  it — don't hardcode absolute paths. `run.sh` is zsh-only and uses
+  `${0:A:h}` so it also resolves through the `macify` symlink.
 - Scripts are idempotent: check if a target file/config already
   exists/matches before writing, and skip (with a `⊘` message) rather than
   clobber. Preserve this when editing them.
