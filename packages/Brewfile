@@ -44,6 +44,8 @@ brew 'pkg-config'
 
 # Terminal & Shell
 brew 'tmux'
+tap 'manaflow-ai/cmux'
+cask 'manaflow-ai/cmux/cmux'
 
 # Networking & Security
 brew 'openssl@3'
@@ -91,6 +93,8 @@ cask 'copilot-cli'
 cask 'claude'
 cask 'claude-code'
 cask 'antigravity'
+tap 'stablyai/orca'
+cask 'stablyai/orca/orca'
 
 # Mac App Store (requires 'mas' and being signed in to the App Store)
 mas 'Amphetamine', id: 937984704
