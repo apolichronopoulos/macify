@@ -84,6 +84,7 @@ cask 'dockdoor'
 cask 'maccy'
 cask 'stats'
 cask 'anydesk'
+cask 'grandperspective'
 
 # AI CLI Tools
 tap 'anomalyco/tap'
