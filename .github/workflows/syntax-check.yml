@@ -9,7 +9,7 @@ jobs:
     # macOS runner: same zsh and /bin/bash (3.2) the scripts run under locally
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Check shell script syntax
         run: |
