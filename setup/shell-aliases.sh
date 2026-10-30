@@ -23,7 +23,7 @@ if [ ! -f "$HOME_ALIASES" ]; then
     echo -e "${GREEN}✓${NC} Copied aliases to ~/.shell_aliases"
 else
     # Merge new aliases from repo file that don't exist in home file
-    local merged=0
+    merged=0
     while IFS= read -r line; do
         if [ -n "$line" ] && [[ ! "$line" =~ ^# ]] && [[ ! "$line" =~ ^$ ]]; then
             if ! grep -F -q "$line" "$HOME_ALIASES"; then

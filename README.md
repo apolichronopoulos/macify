@@ -27,6 +27,30 @@ macify/
 └── LICENSE            # MIT
 ```
 
+## Fresh Mac setup
+
+```bash
+# 1. Command Line Tools (provides git); follow the GUI prompt
+xcode-select --install
+
+# 2. Clone the repo
+mkdir -p ~/Projects/apo && cd ~/Projects/apo
+git clone https://github.com/apolichronopoulos/macify.git && cd macify
+
+# 3. Homebrew + all packages (sign in to the App Store first for `mas` entries)
+./setup/brew.sh
+
+# 4. Git and shell config
+./setup/git-config.sh
+./setup/git-recommended-options.sh
+./setup/aliases.sh
+./setup/shell-aliases.sh
+
+# 5. Install the `macify` command, then open a new terminal
+./setup/install-command.sh
+macify
+```
+
 ## Usage
 
 - **Interactive menu:** `./run.sh`, or `macify` from anywhere once installed

@@ -28,7 +28,7 @@
 	f = fetch
 	p = pull
 	pr = pull --rebase
-	fp = push --force
+	fp = push --force-with-lease
 	main = "!git fetch && git rebase origin/main"
 	master = "!git fetch && git rebase origin/master"
 	autosquash = "!git rebase -i --autosquash origin/master"

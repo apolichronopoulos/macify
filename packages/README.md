@@ -14,6 +14,7 @@ Run the setup script from the root of the repo:
 
 This script will:
 - Install Homebrew if needed
+- Add `brew shellenv` to `~/.zprofile` so `brew` is on your PATH (skipped if already there)
 - Update Homebrew
 - Install all packages from the Brewfile
 
@@ -58,10 +59,19 @@ brew reinstall --cask --force google-gemini
 brew reinstall --cask --force anydesk
 ```
 
-## Uninstall
+## Cleanup
 
-To remove all packages installed from the Brewfile:
+`brew bundle cleanup` does the opposite of what you might expect: it removes
+everything installed that is **not** listed in the Brewfile (e.g. apps you
+installed by hand).
 
 ```bash
+# Dry run: list what would be removed
 brew bundle cleanup --file=packages/Brewfile
+
+# Actually uninstall them
+brew bundle cleanup --force --file=packages/Brewfile
 ```
+
+To uninstall a specific package from the Brewfile, remove its line and run
+`brew uninstall <name>` (or `brew uninstall --cask <name>`).
