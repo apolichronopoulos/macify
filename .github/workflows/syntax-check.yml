@@ -1,0 +1,32 @@
+name: Syntax check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  syntax:
+    # macOS runner: same zsh and /bin/bash (3.2) the scripts run under locally
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check shell script syntax
+        run: |
+          status=0
+          for f in run.sh setup/*.sh; do
+            if head -1 "$f" | grep -q zsh; then shell=zsh; else shell=/bin/bash; fi
+            if $shell -n "$f"; then
+              echo "✓ $f ($shell)"
+            else
+              echo "✗ $f ($shell)"
+              status=1
+            fi
+          done
+          exit $status
+
+      - name: Check git config files parse
+        run: |
+          for f in .config/.gitconfig .config/.gitconfig-apo; do
+            git config -f "$f" --list > /dev/null && echo "✓ $f"
+          done

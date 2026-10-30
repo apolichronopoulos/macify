@@ -6,7 +6,8 @@ Instructions for AI agents (Claude Code, etc.) working in this repository.
 
 `macify` is Alexandros's personal macOS setup/dotfiles repo, published
 publicly under the MIT license (`LICENSE`). It is **not an
-application** — there's no build, no test suite, no CI. It's a collection of
+application** — there's no build and no test suite; CI only syntax-checks
+the scripts (`.github/workflows/syntax-check.yml`). It's a collection of
 shell scripts, config files, and docs that describe and automate how this
 one machine is set up. Changes here are low-risk to the repo itself but can
 have real side effects on the host machine and on global git/shell config
@@ -25,6 +26,11 @@ once a setup script is run.
   `~/.gitconfig-apo`, `~/.shell_aliases`, `~/.zshrc`, `~/.bashrc`, `git
   config --global ...`). Existing files are preserved — scripts check for
   existence/merge rather than overwrite.
+- `setup/macos-defaults.sh` — zsh-only, interactive `defaults write`
+  script. Each setting goes through `set_default`, which skips values that
+  already match and otherwise asks for confirmation; keep it that way (no
+  unconditional writes, no `--yes` mode). Only add settings the user
+  actually uses — values were captured from their machine.
 - `.config/` — the actual config files that `setup/*.sh` copy out:
   `.gitconfig`, `.gitconfig-apo`, `.shell_aliases`. Treat `.gitconfig` as the
   canonical alias list (`run.sh`'s Git menu reads aliases out of it).
@@ -90,6 +96,7 @@ once a setup script is run.
   that get copied to `~`. Treat it as the source of truth; don't regenerate
   it from scratch.
 - There's no test suite to run. "Verifying" a change here means: re-reading
-  the edited script for correctness, and/or running read-only commands
+  the edited script for correctness, `zsh -n`/`bash -n` (what CI runs),
+  and/or running read-only commands
   (`brew bundle check --file=packages/Brewfile`, `git config --global
   --list`) rather than mutating ones.

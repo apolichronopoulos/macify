@@ -22,6 +22,7 @@ macify/
 ├── setup/             # Setup and installation scripts
 ├── .config/           # Git configuration and shell aliases
 ├── docs/              # Development guides and documentation
+├── .github/workflows/ # CI: syntax check of all scripts on push
 ├── run.sh             # Interactive menu (installable as `macify`)
 ├── AGENTS.md          # Instructions for AI coding agents
 └── LICENSE            # MIT
@@ -46,7 +47,10 @@ git clone https://github.com/apolichronopoulos/macify.git && cd macify
 ./setup/aliases.sh
 ./setup/shell-aliases.sh
 
-# 5. Install the `macify` command, then open a new terminal
+# 5. macOS preferences (asks before each change)
+./setup/macos-defaults.sh
+
+# 6. Install the `macify` command, then open a new terminal
 ./setup/install-command.sh
 macify
 ```
@@ -58,6 +62,7 @@ macify
 - **Install packages:** `brew bundle install --file=packages/Brewfile`
 - **Setup Git configuration:** `setup/git-config.sh` — Copies `.gitconfig` and `.gitconfig-apo` to home directory
 - **Setup shell aliases:** `setup/shell-aliases.sh` — Configures shell aliases and environment
+- **Apply macOS preferences:** `setup/macos-defaults.sh` (or Shell → macOS Defaults in the menu) — Finder, Dock, trackpad, screenshots, etc.; shows current vs. new value and asks before each change
 - **Setup other tools:** See individual scripts in `setup/` directory
 
 ## Guides

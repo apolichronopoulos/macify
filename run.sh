@@ -78,7 +78,8 @@ show_shell_menu() {
     echo "3) ${BLUE}View Local Aliases${NC} - View aliases from ~/.bashrc and ~/.zshrc"
     echo "4) ${BLUE}Edit Aliases${NC} - Open shell aliases in editor"
     echo "5) ${GREEN}Install Command${NC} - Install 'macify' command into ~/.local/bin"
-    echo "6) ${RED}Back${NC}"
+    echo "6) ${YELLOW}macOS Defaults${NC} - Apply system preferences (asks before each change)"
+    echo "7) ${RED}Back${NC}"
     echo ""
     echo -e "${BLUE}Press ESC to go back${NC}"
     echo ""
@@ -717,6 +718,10 @@ install_macify_command() {
     bash "${SCRIPT_DIR}/setup/install-command.sh"
 }
 
+setup_macos_defaults() {
+    zsh "${SCRIPT_DIR}/setup/macos-defaults.sh" || true
+}
+
 view_shell_aliases() {
     echo -e "${BLUE}Repository Shell Aliases:${NC}"
     echo ""
@@ -964,6 +969,10 @@ handle_shell_menu() {
                 pause
                 ;;
             6)
+                setup_macos_defaults
+                pause
+                ;;
+            7)
                 return
                 ;;
             *)
