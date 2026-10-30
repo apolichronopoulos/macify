@@ -4,6 +4,7 @@
 	conflictstyle = diff3
 [push]
 	default = current
+	autoSetupRemote = true
 [user]
 	name = Alexandros Polichronopoulos
 	email = alexp.private@gmail.com
@@ -17,12 +18,12 @@
 	required = true
 [includeIf "gitdir:~/Projects/apo/*/"]
     path = ~/.gitconfig-apo
-[includeIf "gitdir:~/Projects/apo/*/"]
-    path = ~/.gitconfig-apo
 [fetch]
 	prune = true
 [init]
 	defaultBranch = master
+[tig]
+	main-view-commit-title-graph = v1
 [alias]
 	f = fetch
 	p = pull

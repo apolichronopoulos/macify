@@ -4,7 +4,8 @@ Instructions for AI agents (Claude Code, etc.) working in this repository.
 
 ## What this repo is
 
-`macify` is Alexandros's personal macOS setup/dotfiles repo. It is **not an
+`macify` is Alexandros's personal macOS setup/dotfiles repo, published
+publicly under the MIT license (`LICENSE`). It is **not an
 application** — there's no build, no test suite, no CI. It's a collection of
 shell scripts, config files, and docs that describe and automate how this
 one machine is set up. Changes here are low-risk to the repo itself but can
@@ -32,17 +33,21 @@ once a setup script is run.
   packages, apply git/shell config, view diffs between repo and
   globally-applied aliases). It's meant to be run directly in a terminal,
   not scripted.
-- `docs/*.md` — standalone reference guides (Python/pyenv/Poetry, Ruby/rbenv
-  setup). These are personal cheat sheets, not instructions tied to this
-  repo's own scripts.
-- `Wallpapers/` — currently empty; just an asset folder.
-- `.idea/`, `.run/` — JetBrains project files, already tracked intentionally
-  per `.gitignore` exceptions (`!.idea/icon.svg`, `!.idea/.ideaIcon.svg`).
+- `docs/*.md` — standalone reference guides (Python/pyenv/Poetry,
+  Ruby/rbenv, Node/nvm setup). These are personal cheat sheets, not
+  instructions tied to this repo's own scripts.
+- `.idea/` — only the project icons are tracked (`.gitignore` ignores the
+  rest of `.idea/` with `!.idea/icon.svg`, `!.idea/.ideaIcon.svg`
+  exceptions). `.run/` holds a tracked JetBrains run configuration for
+  `run.sh`.
+- `.claude/settings.local.json` — local Claude Code settings, ignored via
+  the user's global gitignore; never commit it.
 
 ## Conventions to follow
 
-- **Shell style**: `setup/*.sh` and `run.sh` use `#!/usr/bin/env zsh` (brew.sh
-  uses `#!/bin/bash`), `set -e` where mutation matters, and a shared
+- **Shell style**: `setup/*.sh` and `run.sh` use `#!/usr/bin/env zsh`
+  (`brew.sh` and `install-command.sh` use `#!/bin/bash`), `set -e` where
+  mutation matters, and a shared
   color-code pattern (`GREEN`/`YELLOW`/`BLUE`/`RED`/`CYAN`/`NC` with
   `\033[...]` escapes) plus `✓`/`⚠`/`⊘`/`✗` status glyphs in echoed output.
   Match this style in any new script rather than introducing a different
@@ -72,9 +77,15 @@ once a setup script is run.
   a script — prefer reading the script or doing a dry run (e.g.
   `brew bundle check`) over actually applying changes, unless the user
   clearly wants the real effect.
-- Never commit secrets. `.gitignore` already excludes `.env*`, `*.key`,
-  `*.pem`, `*.p12` — if you ever see credential-shaped content staged,
-  stop and flag it rather than committing.
+- **This repo is public.** Never commit secrets. `.gitignore` already
+  excludes `.env*`, `*.key`, `*.pem`, `*.p12` — if you ever see
+  credential-shaped content staged, stop and flag it rather than
+  committing. Also keep out private details that aren't already public:
+  work/employer-internal hostnames, IPs, tokens in URLs, absolute
+  `/Users/<name>/...` paths (use `~` instead), or personal data beyond the
+  name/email already in `.config/`.
+- Don't introduce config that stores credentials in plaintext as the
+  primary mechanism; prefer macOS Keychain (`osxkeychain`) or `gh auth`.
 - `.config/.gitconfig` contains the user's real name/email and git aliases
   that get copied to `~`. Treat it as the source of truth; don't regenerate
   it from scratch.

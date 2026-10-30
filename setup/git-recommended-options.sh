@@ -14,8 +14,10 @@ echo ""
 git config --global core.editor nano
 echo -e "${GREEN}✓${NC} Set core.editor to nano"
 
-git config --global credential.helper store
-echo -e "${GREEN}✓${NC} Set credential.helper to store"
+# Helpers are tried in order: macOS Keychain first, plaintext ~/.git-credentials as fallback
+git config --global --replace-all credential.helper osxkeychain
+git config --global --add credential.helper store
+echo -e "${GREEN}✓${NC} Set credential.helper to osxkeychain (primary) and store (fallback)"
 
 git config --global fetch.prune true
 echo -e "${GREEN}✓${NC} Enabled fetch.prune (auto-prune stale remote branches)"

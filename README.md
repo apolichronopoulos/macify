@@ -2,6 +2,11 @@
 
 Personal macOS setup and configuration management.
 
+> **Note:** This is my personal setup, shared as-is. The scripts modify global
+> git config and shell files in your home directory (`~/.gitconfig`, `~/.zshrc`,
+> etc.) — read them before running, and swap in your own name/email in
+> `.config/.gitconfig*`.
+
 ## What's included
 
 - **Brewfile** — Homebrew packages and applications
@@ -17,7 +22,9 @@ macify/
 ├── setup/             # Setup and installation scripts
 ├── .config/           # Git configuration and shell aliases
 ├── docs/              # Development guides and documentation
-└── .claude/           # Claude Code workspace configuration
+├── run.sh             # Interactive menu (installable as `macify`)
+├── AGENTS.md          # Instructions for AI coding agents
+└── LICENSE            # MIT
 ```
 
 ## Usage
@@ -39,4 +46,8 @@ macify/
 
 - Sensitive files (API keys, tokens, etc.) are excluded in `.gitignore`
 - See `packages/README.md` for detailed Brewfile information
+
+## License
+
+[MIT](LICENSE)
 
